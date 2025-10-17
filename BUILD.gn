@@ -1,0 +1,64 @@
+import("../../webrtc.gni")
+
+config("sqlcipher_config") {
+}
+
+rtc_library("sqlcipher") {
+  defines = [
+    "ANDROID",
+    "_FILE_OFFSET_BITS=64",
+    "HAVE_USLEEP=1",
+    "LOG_NDEBUG",
+    "NDEBUG=1",
+    "SQLCIPHER_CRYPTO_OPENSSL",
+    "SQLITE_DEFAULT_JOURNAL_SIZE_LIMIT=1048576",
+    "SQLITE_OS_UNIX=1",
+    "SQLITE_ENABLE_COLUMN_METADATA",
+    "SQLITE_ENABLE_DBSTAT_VTAB",
+    # "SQLITE_ENABLE_FTS3_PARENTHESIS",
+    # "SQLITE_ENABLE_FTS4",
+    # "SQLITE_ENABLE_FTS5",
+    # "SQLITE_ENABLE_JSON1",
+    # "SQLITE_ENABLE_LOAD_EXTENSION",
+    "SQLITE_OMIT_LOAD_EXTENSION=1",
+    "SQLITE_OMIT_JSON",
+    "SQLITE_ENABLE_MEMORY_MANAGEMENT=1",
+    "SQLITE_ENABLE_RTREE",
+    "SQLITE_ENABLE_STAT3",
+    "SQLITE_ENABLE_STAT4",
+    "SQLITE_ENABLE_UNLOCK_NOTIFY",
+    "SQLITE_HAS_CODEC",
+    "SQLITE_MAX_VARIABLE_NUMBER=99999",
+    "SQLITE_SOUNDEX",
+    "SQLITE_TEMP_STORE=3",
+    "SQLITE_THREADSAFE=1",
+  ]
+  
+  include_dirs = [
+    "src",
+    "android",
+  ]
+
+  sources = [
+    "src/sqlite3.c",
+    "android/CursorWindow.cpp",
+    "android/jni_exception.cpp",
+    "android/net_sqlcipher_CursorWindow.cpp",
+    "android/net_sqlcipher_database_SQLiteCompiledSql.cpp",
+    "android/net_sqlcipher_database_SQLiteDatabase.cpp",    
+    "android/net_sqlcipher_database_SQLiteQuery.cpp",
+    "android/net_sqlcipher_database_SQLiteProgram.cpp",    
+    "android/net_sqlcipher_database_SQLiteStatement.cpp",
+  ]
+
+  if (is_android) {
+      deps = [
+        "//third_party/boringssl",    
+      ]  
+  } else {
+    deps = [
+        "//third_party/boringssl",    
+    ]
+    public_configs = [ "//third_party/jdk:jdk" ]
+  }
+}
