@@ -5,10 +5,6 @@ config("sqlcipher_config") {
 
 rtc_library("sqlcipher") {
   defines = [
-    "ANDROID",
-    "_FILE_OFFSET_BITS=64",
-    "HAVE_USLEEP=1",
-    "LOG_NDEBUG",
     "NDEBUG=1",
     "SQLCIPHER_CRYPTO_OPENSSL",
     "SQLITE_DEFAULT_JOURNAL_SIZE_LIMIT=1048576",
@@ -33,32 +29,47 @@ rtc_library("sqlcipher") {
     "SQLITE_TEMP_STORE=3",
     "SQLITE_THREADSAFE=1",
   ]
-  
+  if (is_android) {
+    defines += [
+      "ANDROID",
+      "_FILE_OFFSET_BITS=64",
+      "HAVE_USLEEP=1",
+      "LOG_NDEBUG",
+    ]
+  }
+  if (is_ios) {
+    defines += [
+      "SQLCIPHER_CRYPTO_CC",
+    ]
+  }
   include_dirs = [
     "src",
-    "android",
   ]
 
   sources = [
     "src/sqlite3.c",
-    "android/CursorWindow.cpp",
-    "android/jni_exception.cpp",
-    "android/net_sqlcipher_CursorWindow.cpp",
-    "android/net_sqlcipher_database_SQLiteCompiledSql.cpp",
-    "android/net_sqlcipher_database_SQLiteDatabase.cpp",    
-    "android/net_sqlcipher_database_SQLiteQuery.cpp",
-    "android/net_sqlcipher_database_SQLiteProgram.cpp",    
-    "android/net_sqlcipher_database_SQLiteStatement.cpp",
   ]
 
-  if (is_android) {
-      deps = [
-        "//third_party/boringssl",    
-      ]  
-  } else {
-    deps = [
-        "//third_party/boringssl",    
+  if (!is_ios) {
+    sources += [
+      "android/CursorWindow.cpp",
+      "android/jni_exception.cpp",
+      "android/net_sqlcipher_CursorWindow.cpp",
+      "android/net_sqlcipher_database_SQLiteCompiledSql.cpp",
+      "android/net_sqlcipher_database_SQLiteDatabase.cpp",    
+      "android/net_sqlcipher_database_SQLiteQuery.cpp",
+      "android/net_sqlcipher_database_SQLiteProgram.cpp",    
+      "android/net_sqlcipher_database_SQLiteStatement.cpp",
     ]
+    include_dirs += [
+        "android",
+    ]
+  }
+  deps = [
+    "//third_party/boringssl",    
+  ]
+
+  if (!is_android && !is_ios) {
     public_configs = [ "//third_party/jdk:jdk" ]
   }
 }

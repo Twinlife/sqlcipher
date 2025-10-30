@@ -77,6 +77,9 @@
 #define HAVE_FDATASYNC 0
 #define SQLITE_OS_WIN 0
 #define SQLITE_ENABLE_HIDDEN_COLUMNS 0
+#ifdef SQLCIPHER_CRYPTO_CC
+# define HAVE_GETHOSTUUID 0
+#endif
 
 /* --twinlife 2025-02-13: integrate SQLCipher 4.6.1 */
 
