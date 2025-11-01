@@ -42,6 +42,14 @@ rtc_library("sqlcipher") {
       "SQLCIPHER_CRYPTO_CC",
     ]
   }
+  if (is_linux) {
+    defines += [
+      "ANDROID",
+      "_FILE_OFFSET_BITS=64",
+      "HAVE_USLEEP=1",
+      "LOG_NDEBUG",    
+    ]
+  }
   include_dirs = [
     "src",
   ]

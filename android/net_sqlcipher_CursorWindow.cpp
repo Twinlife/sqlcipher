@@ -627,7 +627,7 @@ namespace sqlcipher {
       {"isBlob_native", "(II)Z", (void *)isBlob_native},
       {"getString_native", "(II)Ljava/lang/String;", (void *)getString_native},
       //{"getString_native", "(II)[B", (void *)getString_native},
-      {"copyStringToBuffer_native", "(IIILandroid/database/CharArrayBuffer;)[C", (void *)copyStringToBuffer_native},
+      {"copyStringToBuffer_native", "(IIILnet/sqlcipher/CharArrayBuffer;)[C", (void *)copyStringToBuffer_native},
       {"getDouble_native", "(II)D", (void *)getDouble_native},
       {"isNull_native", "(II)Z", (void *)isNull_native},
       {"getNumRows_native", "()I", (void *)getNumRows},
@@ -658,9 +658,9 @@ namespace sqlcipher {
       LOGE("Error locating fields");
       return -1;
     }
-    clazz =  env->FindClass("android/database/CharArrayBuffer");
+    clazz =  env->FindClass("net/sqlcipher/CharArrayBuffer");
     if (clazz == NULL) {
-      LOGE("Can't find android/database/CharArrayBuffer");
+      LOGE("Can't find net/sqlcipher/CharArrayBuffer");
       return -1;
     }
     gBufferField = env->GetFieldID(clazz, "data", "[C");
