@@ -37,6 +37,7 @@
 namespace sqlcipher {
 
 #pragma clang diagnostic ignored "-Wwritable-strings"
+#pragma clang diagnostic ignored "-Wshadow"
 
   static jfieldID gWindowField;
   static jfieldID gBufferField;
