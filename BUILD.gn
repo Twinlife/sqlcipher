@@ -47,7 +47,8 @@ rtc_library("sqlcipher") {
       "ANDROID",
       "_FILE_OFFSET_BITS=64",
       "HAVE_USLEEP=1",
-      "LOG_NDEBUG",    
+      "LOG_NDEBUG",
+      "OMIT_MEMLOCK"
     ]
   }
   include_dirs = [
